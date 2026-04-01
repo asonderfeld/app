@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guest Check-in via apaleo</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+  <main class="container">
+    <h1>Gast-Check-in (apaleo)</h1>
+    <p>Gib die Reservierungs-ID ein, um den Check-in auszulösen.</p>
+
+    <form action="/checkin" method="post" class="card">
+      <label for="reservation_id">Reservierungs-ID</label>
+      <input id="reservation_id" name="reservation_id" required placeholder="z. B. RES-12345" />
+      <button type="submit">Jetzt einchecken</button>
+    </form>
+
+    {% if error %}
+      <section class="card error">
+        <h2>Fehler</h2>
+        <pre>{{ error }}</pre>
+      </section>
+    {% endif %}
+
+    {% if result %}
+      <section class="card success">
+        <h2>Erfolg</h2>
+        <p>Reservierung wurde geladen und Check-in aufgerufen.</p>
+        <h3>Reservierungsdaten</h3>
+        <pre>{{ result.reservation | tojson(indent=2) }}</pre>
+        <h3>Check-in Antwort</h3>
+        <pre>{{ result.checked_in | tojson(indent=2) }}</pre>
+      </section>
+    {% endif %}
+  </main>
+</body>
+</html>
